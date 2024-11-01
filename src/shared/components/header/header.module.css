@@ -1,0 +1,19 @@
+.header {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-2), transparent);
+    padding: var(--mantine-spacing-sm) 0;
+    margin-bottom: rem(16px);
+}
+
+.mainSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdownBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+

@@ -1,0 +1,20 @@
+html,
+body,
+#root {
+    height: 100dvh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.mantine-active {
+    transform: 0 !important;
+}

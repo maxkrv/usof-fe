@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-3));
+    max-width: rem(500px);
+    padding-top: rem(80px);
+
+    @media (max-width: $mantine-breakpoint-md) {
+        max-width: 100%;
+        border-left: 0 solid transparent !important;
+    }
+}
+
+.title {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+    font-family:
+        Greycliff CF,
+        var(--mantine-font-family);
+}
+
+.banner {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    h1 {
+        font-size: rem(72px);
+    }
+
+    p {
+        font-size: rem(24px);
+    }
+
+    @media (max-width: $mantine-breakpoint-md) {
+        display: none;
+    }
+}
+
+.backButton {
+    position: absolute;
+    top: rem(10px);
+    left: rem(10px);
+}
