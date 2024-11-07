@@ -1,0 +1,12 @@
+.favoriteButton {
+    width: min-content;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(5px);
+    padding: rem(5px);
+    background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
+    border-radius: rem(10px);
+}

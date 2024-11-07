@@ -24,13 +24,13 @@ export const apiClient = ky.create({
     beforeError: [
       async (error) => {
         const err = await error.response.json();
-
         return err as HTTPError;
       }
     ],
     beforeRetry: [
       async ({ request }) => {
         const refreshToken = getRefreshToken();
+        console.log('🚀 ~ file: api.ts:34 ~ refreshToken:', refreshToken);
 
         if (!refreshToken) return;
 
@@ -50,5 +50,10 @@ export const apiClient = ky.create({
         request.headers.set('Authorization', `Bearer ${res.accessToken}`);
       }
     ]
+  },
+  retry: {
+    methods: ['get', 'post', 'put', 'patch', 'delete'],
+    statusCodes: [401],
+    limit: 1
   }
 });

@@ -1,0 +1,17 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input {
+        max-width: 300px;
+
+        @media (max-width: $mantine-breakpoint-xs) {
+            max-width: 100%;
+        }
+    }
+
+    button {
+        align-self: flex-start;
+    }
+}

@@ -1,4 +1,7 @@
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-2), transparent);
     padding: var(--mantine-spacing-sm) 0;

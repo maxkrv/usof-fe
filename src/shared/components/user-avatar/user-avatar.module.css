@@ -1,0 +1,21 @@
+.avatar {
+    position: relative;
+    padding: rem(3px);
+    border-radius: calc(var(--mantine-radius-md) + rem(3px));
+    background: linear-gradient(90deg, var(--mantine-color-red-filled) 0%, var(--mantine-color-yellow-filled) 100%);
+
+    &.md {
+        padding: rem(1px);
+        border-radius: calc(var(--mantine-radius-md) + rem(1px));
+    }
+
+    div:first-child {
+        background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    }
+
+    button {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+}

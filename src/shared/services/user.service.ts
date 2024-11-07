@@ -1,12 +1,27 @@
 import { apiClient } from '../api/api';
-import { User } from '../types/interfaces';
+import { EditUserDto, User } from '../types/interfaces';
 
 export class UserService {
   static async me(): Promise<User> {
-    // await new Promise((resolve) => setTimeout(resolve, 10000));
+    return apiClient.get<User>('user/me').json();
+  }
+
+  static async updateAvatar(dto: FormData) {
     return apiClient
-      .get<User>('user/me', {
-        retry: 1
+      .patch('user/avatar', {
+        body: dto,
+        timeout: false
+      })
+      .json();
+  }
+
+  static async updateProfile(dto: EditUserDto) {
+    const json = { ...dto };
+    delete json.email;
+
+    return apiClient
+      .patch('user', {
+        json
       })
       .json();
   }

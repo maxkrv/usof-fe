@@ -54,3 +54,70 @@ export interface User {
   isActive: boolean;
   fullName: string;
 }
+
+export const EditUserSchema = z.object({
+  username: z.string().trim().min(1, { message: 'Username is required' }).optional(),
+  fullName: z.string().trim().min(1, { message: 'Full name is required' }).optional(),
+  email: z.string().email().trim().min(1, { message: 'Email is required' }).optional()
+});
+export type EditUserDto = z.infer<typeof EditUserSchema>;
+
+export interface Category {
+  id: number;
+  title: string;
+}
+
+export interface PaginationDto {
+  page?: number;
+  limit?: number;
+}
+
+export interface GetPostsDto extends PaginationDto {
+  order?: 'asc' | 'desc';
+  orderBy?: 'createdAt' | 'rating' | 'comments';
+  categoryId?: number;
+  userId?: number;
+  fromDate?: Date;
+  toDate?: Date;
+  status?: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface PaginationResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    total: number;
+  };
+}
+
+export interface PostResponse {
+  id: number;
+  title: string;
+  content: string;
+  myAction: 'LIKE' | 'DISLIKE' | null;
+  rating: number;
+  comments: number;
+  status?: 'ACTIVE' | 'INACTIVE';
+  favorite: boolean;
+  categories: Category[];
+  author: {
+    id: number;
+    profilePicture: string | null;
+    username: string;
+  };
+  createdAt: Date;
+}
+
+export interface ReactionDto {
+  type: 'LIKE' | 'DISLIKE';
+}
+
+export interface IPostFilterForm {
+  order: {
+    value: 'asc' | 'desc';
+    orderBy: 'createdAt' | 'rating' | 'comments';
+  };
+  fromDate?: Date | null;
+  toDate?: Date | null;
+  status?: 'ACTIVE' | 'INACTIVE';
+}

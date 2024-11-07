@@ -1,4 +1,4 @@
-import { Alert, Avatar, Button, Group, Menu, Text, UnstyledButton } from '@mantine/core';
+import { Alert, Button, Flex, Group, Menu, Text, UnstyledButton } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { FaRegUser } from 'react-icons/fa6';
 import { IoIosLogOut } from 'react-icons/io';
@@ -11,6 +11,8 @@ import { clearUser } from '@/shared/store/features/user-slice';
 import { removeTokens } from '@/shared/utils/utils';
 
 import Container from '../container/container';
+import { MobileMenu } from '../mobile-menu/mobile-menu';
+import { UserAvatar } from '../user-avatar/user-avatar';
 import classes from './header.module.css';
 
 const authRoutes = ['/login', '/register', '/activate', '/reset-password'];
@@ -55,27 +57,24 @@ export const Header = () => {
 
       <header className={classes.header}>
         <Container className={classes.mainSection}>
-          <Text
-            component={Link}
-            to={'/'}
-            size="xl"
-            fw={900}
-            variant="gradient"
-            gradient={{ from: 'red', to: 'yellow', deg: 90 }}>
-            USOF
-          </Text>
+          <Flex gap="sm" align="center">
+            <MobileMenu />
+            <Text
+              component={Link}
+              to={'/'}
+              size="xl"
+              fw={900}
+              variant="gradient"
+              gradient={{ from: 'red', to: 'yellow', deg: 90 }}>
+              USOF
+            </Text>
+          </Flex>
 
           {user && (
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <UnstyledButton style={{ borderRadius: '50%' }}>
-                  {user.profilePicture ? (
-                    <Avatar src={user.profilePicture} radius="md" />
-                  ) : (
-                    <Avatar radius="md">
-                      <FaRegUser />
-                    </Avatar>
-                  )}
+                  <UserAvatar src={user.profilePicture} size="md" />
                 </UnstyledButton>
               </Menu.Target>
 
