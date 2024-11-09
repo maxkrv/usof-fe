@@ -2,7 +2,7 @@ import { NavLink, Paper, Title } from '@mantine/core';
 import classNames from 'classnames';
 import { FC } from 'react';
 import { IoChevronForward } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { Category } from '@/shared/types/interfaces';
 
@@ -14,6 +14,8 @@ interface CategoryListProps {
 }
 
 export const CategoryList: FC<CategoryListProps> = ({ categories, isDrawer }) => {
+  const { pathname } = useLocation();
+
   return (
     <Paper component="aside" className={classNames(classes.container, { [classes.drawer]: isDrawer })}>
       <Title ta={'center'} order={4} mb="sm">
@@ -21,6 +23,9 @@ export const CategoryList: FC<CategoryListProps> = ({ categories, isDrawer }) =>
       </Title>
 
       <ul>
+        <li>
+          <NavLink component={Link} label="All" to="/" rightSection={<IoChevronForward />} active={pathname === '/'} />
+        </li>
         {categories.map((category) => (
           <li key={category.id}>
             <NavLink
@@ -28,6 +33,7 @@ export const CategoryList: FC<CategoryListProps> = ({ categories, isDrawer }) =>
               label={category.title}
               to={`/category/${category.id}`}
               rightSection={<IoChevronForward />}
+              active={pathname === `/category/${category.id}`}
             />
           </li>
         ))}

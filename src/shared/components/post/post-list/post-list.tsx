@@ -22,5 +22,9 @@ export const PostList: FC<PostListProps> = ({ data, isLoading }) => {
     );
   }
 
-  return <div className={classes.container}>{data?.data?.map((post) => <PostCard key={post.id} post={post} />)}</div>;
+  return (
+    <div className={classes.container}>
+      {data?.data?.map((post) => <PostCard key={post.id} post={post} isFeed={true} />)}
+    </div>
+  );
 };

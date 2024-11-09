@@ -1,6 +1,6 @@
 import { Button, Flex, Paper, Select, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Dispatch, FC, useEffect, useState } from 'react';
+import { Dispatch, FC, ReactNode, useEffect, useState } from 'react';
 import { FaFilter } from 'react-icons/fa';
 
 import { IPostFilterForm } from '@/shared/types/interfaces';
@@ -9,10 +9,11 @@ import classes from './post-filter-form.module.css';
 import { PostFilterModal } from './post-filter-modal/post-filter-modal';
 
 interface PostFilterFormProps {
-  title?: string;
+  title?: string | ReactNode;
   filters: IPostFilterForm;
   setFilters: Dispatch<React.SetStateAction<IPostFilterForm>>;
   isLoading: boolean;
+  hasActiveFilters?: boolean;
 }
 
 type FuckingMagicTypeForSelectValue = `${'asc' | 'desc'}/${'createdAt' | 'rating' | 'comments'}`;
@@ -49,7 +50,13 @@ const ORDER_OPTIONS: OrderOption[] = [
   }
 ];
 
-export const PostFilterForm: FC<PostFilterFormProps> = ({ title = 'Feed', filters, setFilters, isLoading }) => {
+export const PostFilterForm: FC<PostFilterFormProps> = ({
+  title = 'Feed',
+  filters,
+  setFilters,
+  isLoading,
+  hasActiveFilters
+}) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const [select, setSelect] = useState(ORDER_OPTIONS[0].value);
@@ -87,7 +94,13 @@ export const PostFilterForm: FC<PostFilterFormProps> = ({ title = 'Feed', filter
         </Flex>
       </Paper>
 
-      <PostFilterModal filters={filters} setFilters={setFilters} opened={opened} onClose={close} />
+      <PostFilterModal
+        filters={filters}
+        setFilters={setFilters}
+        opened={opened}
+        onClose={close}
+        hasActiveFilters={hasActiveFilters}
+      />
     </>
   );
 };

@@ -1,0 +1,29 @@
+.content {
+  background: transparent;
+  border: none !important;
+  outline: none !important;
+
+  div {
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+  }
+
+  p {
+    word-break: break-all;
+  }
+}
+
+.feed {
+  max-height: 190px;
+  overflow: hidden;
+}
+
+.link {
+  top: 0;
+  z-index: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}

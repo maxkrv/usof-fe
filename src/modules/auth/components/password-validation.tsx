@@ -30,7 +30,6 @@ interface PasswordRequirementsProps {
 }
 
 export const PasswordRequirements: FC<PasswordRequirementsProps> = ({ password, enableCheck }) => {
-  console.log('🚀 ~ file: password-validation.tsx:33 ~ password:', password);
   return (
     <div>
       {Object.values(requirements).map((requirement, index) => (

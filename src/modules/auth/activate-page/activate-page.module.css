@@ -1,12 +1,12 @@
 .container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: rem(20px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: rem(20px);
 }
 
 .title {
-    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }

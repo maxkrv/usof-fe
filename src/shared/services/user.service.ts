@@ -6,6 +6,10 @@ export class UserService {
     return apiClient.get<User>('user/me').json();
   }
 
+  static async getById(id: number) {
+    return apiClient.get<User>(`user/${id}`).json();
+  }
+
   static async updateAvatar(dto: FormData) {
     return apiClient
       .patch('user/avatar', {

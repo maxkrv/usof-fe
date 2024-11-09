@@ -1,8 +1,9 @@
 import { Alert, Button, Flex, Group, Menu, Text, UnstyledButton } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { FaRegUser } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
 import { IoIosLogOut } from 'react-icons/io';
-import { IoSettingsOutline } from 'react-icons/io5';
+import { MdLibraryBooks } from 'react-icons/md';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/redux';
@@ -89,8 +90,14 @@ export const Header = () => {
                   Profile
                 </Menu.Item>
 
-                <Menu.Item component={Link} to={'/settings'} leftSection={<IoSettingsOutline />}>
-                  Settings
+                <Menu.Divider />
+
+                <Menu.Item component={Link} to={'/post/create'} leftSection={<FaPlus />}>
+                  Create post
+                </Menu.Item>
+
+                <Menu.Item component={Link} to={'/my-posts'} leftSection={<MdLibraryBooks />}>
+                  My posts
                 </Menu.Item>
 
                 <Menu.Divider />

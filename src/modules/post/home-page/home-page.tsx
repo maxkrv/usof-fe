@@ -1,3 +1,4 @@
+import { Pagination } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -9,6 +10,7 @@ import { POST_FEED } from '@/shared/constants/query-keys';
 import { useCategories } from '@/shared/hooks/categories';
 import { PostService } from '@/shared/services/post.service';
 import { IPostFilterForm } from '@/shared/types/interfaces';
+import { getTotalPages } from '@/shared/utils/utils';
 
 import classes from './home-page.module.css';
 
@@ -17,7 +19,7 @@ const HomePage = () => {
   const [filters, setFilters] = useState<IPostFilterForm>({
     order: {
       orderBy: 'createdAt',
-      value: 'asc'
+      value: 'desc'
     },
     fromDate: null,
     toDate: null
@@ -28,9 +30,10 @@ const HomePage = () => {
     isFetching,
     isLoading: isLoadingPosts
   } = useQuery({
-    queryKey: [POST_FEED, filters.order.orderBy, filters.order.value, filters.fromDate, filters.toDate],
+    queryKey: [POST_FEED, filters.order.orderBy, filters.order.value, filters.fromDate, filters.toDate, filters.page],
     queryFn: async () =>
       PostService.getAll({
+        page: filters.page,
         orderBy: filters.order.orderBy,
         order: filters.order.value,
         fromDate: filters.fromDate || undefined,
@@ -48,6 +51,18 @@ const HomePage = () => {
         <PostFilterForm filters={filters} setFilters={setFilters} isLoading={loading} />
 
         <PostList isLoading={loading} data={data!} />
+
+        <Pagination
+          total={getTotalPages(data?.pagination.total || 0, 10)}
+          value={filters.page}
+          onChange={(page) => {
+            window.scrollTo(0, 0);
+            setFilters((prev) => ({ ...prev, page }));
+          }}
+          style={{
+            alignSelf: 'center'
+          }}
+        />
       </main>
     </Container>
   );

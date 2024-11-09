@@ -32,3 +32,7 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
   return localStorage.getItem('refreshToken');
 };
+
+export const getTotalPages = (count: number, limit: number) => {
+  return Math.ceil(count / limit);
+};

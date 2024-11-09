@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  padding-bottom: rem(20px);
+}
+
+.userSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.userContainerDesktop {
+  display: flex;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: rem(20px);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.userContainerDesktopSkeleton {
+  height: 165px;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    height: 120px;
+  }
+}
+
+.userInfo {
+  display: flex;
+  gap: rem(20px);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
+    gap: 0;
+  }
+}

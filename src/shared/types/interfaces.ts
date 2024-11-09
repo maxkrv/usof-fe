@@ -112,7 +112,7 @@ export interface ReactionDto {
   type: 'LIKE' | 'DISLIKE';
 }
 
-export interface IPostFilterForm {
+export interface IPostFilterForm extends PaginationDto {
   order: {
     value: 'asc' | 'desc';
     orderBy: 'createdAt' | 'rating' | 'comments';
@@ -120,4 +120,44 @@ export interface IPostFilterForm {
   fromDate?: Date | null;
   toDate?: Date | null;
   status?: 'ACTIVE' | 'INACTIVE';
+  categoryId?: number;
+}
+
+export const CreatePostSchema = z.object({
+  title: z.string().trim().min(1, { message: 'Title is required' }),
+  content: z.string().trim().min(1, { message: 'Content is required' }),
+  categoryIds: z.array(z.number()).min(1, { message: 'Category is required' })
+});
+export type CreatePostDto = z.infer<typeof CreatePostSchema>;
+
+export interface GetCommentsDto extends PaginationDto {
+  postId: number;
+  order?: 'asc' | 'desc';
+  orderBy?: 'createdAt' | 'rating';
+}
+
+export interface ICommentFilterForm extends PaginationDto {
+  order: {
+    value: 'asc' | 'desc';
+    orderBy: 'createdAt' | 'rating';
+  };
+}
+
+export interface CommentResponse {
+  id: number;
+  content: string;
+  isEdited: boolean;
+  createdAt: Date;
+  rating: number;
+  myReaction: 'LIKE' | 'DISLIKE' | null;
+  author: {
+    id: number;
+    username: string;
+    profilePicture: string;
+  };
+}
+
+export interface CommentDto {
+  content: string;
+  postId: number;
 }

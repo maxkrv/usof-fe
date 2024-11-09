@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ky, { HTTPError } from 'ky';
 
 import { config } from '@/config/config';
@@ -28,9 +29,10 @@ export const apiClient = ky.create({
       }
     ],
     beforeRetry: [
-      async ({ request }) => {
+      async ({ request, error }) => {
+        if ((error as any).statusCode !== 401) return;
+
         const refreshToken = getRefreshToken();
-        console.log('🚀 ~ file: api.ts:34 ~ refreshToken:', refreshToken);
 
         if (!refreshToken) return;
 

@@ -16,8 +16,6 @@ const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  // console.log('ho');
-
   return children;
 };
 
