@@ -1,4 +1,5 @@
 import { Skeleton } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { FC } from 'react';
 
 import { PaginationResponse, PostResponse } from '@/shared/types/interfaces';
@@ -20,6 +21,10 @@ export const PostList: FC<PostListProps> = ({ data, isLoading }) => {
         ))}
       </div>
     );
+  }
+
+  if (!isLoading && !data?.data?.length) {
+    return <Text ta="center">No posts found.</Text>;
   }
 
   return (

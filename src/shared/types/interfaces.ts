@@ -130,6 +130,14 @@ export const CreatePostSchema = z.object({
 });
 export type CreatePostDto = z.infer<typeof CreatePostSchema>;
 
+export const UpdatePostSchema = z.object({
+  title: z.string().trim().min(1, { message: 'Title is required' }),
+  content: z.string().trim().min(1, { message: 'Content is required' }),
+  categoryIds: z.array(z.number()).min(1, { message: 'Category is required' }),
+  status: z.enum(['ACTIVE', 'INACTIVE'])
+});
+export type UpdatePostDto = z.infer<typeof UpdatePostSchema>;
+
 export interface GetCommentsDto extends PaginationDto {
   postId: number;
   order?: 'asc' | 'desc';

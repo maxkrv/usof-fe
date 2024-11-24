@@ -7,6 +7,7 @@ export const POST_FEED = 'POST_FEED';
 export const USERS_POSTS = 'USERS_POSTS';
 export const CATEGORY_POSTS = 'CATEGORY_POSTS';
 export const MY_POSTS = 'MY_POSTS';
+export const POST_FAVORITES = 'POST_FAVORITES';
 export const POST_BY_ID = 'POST_BY_ID';
 
 export const COMMENTS = 'COMMENTS';

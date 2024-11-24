@@ -1,6 +1,17 @@
-import { Alert, Button, Flex, Group, Menu, Text, UnstyledButton } from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Button,
+  Flex,
+  Group,
+  Menu,
+  rem,
+  Text,
+  UnstyledButton,
+  useMantineColorScheme
+} from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
-import { FaRegUser } from 'react-icons/fa6';
+import { FaMoon, FaRegUser, FaStar, FaSun } from 'react-icons/fa6';
 import { FaPlus } from 'react-icons/fa6';
 import { IoIosLogOut } from 'react-icons/io';
 import { MdLibraryBooks } from 'react-icons/md';
@@ -21,6 +32,9 @@ const authRoutes = ['/login', '/register', '/activate', '/reset-password'];
 export const Header = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === 'dark';
 
   const user = useAppSelector((state) => state.user.user);
 
@@ -71,57 +85,69 @@ export const Header = () => {
             </Text>
           </Flex>
 
-          {user && (
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <UnstyledButton style={{ borderRadius: '50%' }}>
-                  <UserAvatar src={user.profilePicture} size="md" />
-                </UnstyledButton>
-              </Menu.Target>
+          <Flex gap={rem(5)} align="center">
+            <ActionIcon
+              variant="outline"
+              color={dark ? 'yellow' : 'blue'}
+              onClick={() => toggleColorScheme()}
+              title="Toggle color scheme">
+              {dark ? <FaSun /> : <FaMoon />}
+            </ActionIcon>
 
-              <Menu.Dropdown>
-                <Menu.Label>
-                  <Text size="xs" truncate>
-                    {user.fullName}
-                  </Text>
-                </Menu.Label>
+            {user && (
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <UnstyledButton style={{ borderRadius: '50%' }}>
+                    <UserAvatar src={user.profilePicture} size="md" />
+                  </UnstyledButton>
+                </Menu.Target>
 
-                <Menu.Item component={Link} to={'/profile'} leftSection={<FaRegUser />}>
-                  Profile
-                </Menu.Item>
+                <Menu.Dropdown>
+                  <Menu.Label>
+                    <Text size="xs" truncate>
+                      {user.fullName}
+                    </Text>
+                  </Menu.Label>
 
-                <Menu.Divider />
+                  <Menu.Item component={Link} to={'/profile'} leftSection={<FaRegUser />}>
+                    Profile
+                  </Menu.Item>
 
-                <Menu.Item component={Link} to={'/post/create'} leftSection={<FaPlus />}>
-                  Create post
-                </Menu.Item>
+                  <Menu.Divider />
 
-                <Menu.Item component={Link} to={'/my-posts'} leftSection={<MdLibraryBooks />}>
-                  My posts
-                </Menu.Item>
+                  <Menu.Item component={Link} to={'/post/create'} leftSection={<FaPlus />}>
+                    Create post
+                  </Menu.Item>
 
-                <Menu.Divider />
+                  <Menu.Item component={Link} to={'/my-posts'} leftSection={<MdLibraryBooks />}>
+                    My posts
+                  </Menu.Item>
 
-                <Menu.Item color="red" onClick={handleLogout} leftSection={<IoIosLogOut />}>
-                  Logout
-                  {/* <Button color="red" onClick={handleLogout} w={'100%'}>
-                </Button> */}
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          )}
+                  <Menu.Item component={Link} to={'/favorites'} leftSection={<FaStar />}>
+                    Favorite posts
+                  </Menu.Item>
 
-          {!user && (
-            <Group gap="xs">
-              <Button component={Link} to={'/login'} styles={{ root: { ':active': { transform: 'none' } } }}>
-                Login
-              </Button>
+                  <Menu.Divider />
 
-              <Button component={Link} to={'/register'} variant="light">
-                Register
-              </Button>
-            </Group>
-          )}
+                  <Menu.Item color="red" onClick={handleLogout} leftSection={<IoIosLogOut />}>
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            )}
+
+            {!user && (
+              <Group gap="xs">
+                <Button component={Link} to={'/login'} styles={{ root: { ':active': { transform: 'none' } } }}>
+                  Login
+                </Button>
+
+                <Button component={Link} to={'/register'} variant="light">
+                  Register
+                </Button>
+              </Group>
+            )}
+          </Flex>
         </Container>
       </header>
     </>

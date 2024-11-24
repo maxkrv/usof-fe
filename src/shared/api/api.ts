@@ -4,7 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { config } from '@/config/config';
 
 import { AuthResponse } from '../types/interfaces';
-import { addTokens, getAccessToken, getRefreshToken } from '../utils/utils';
+import { addTokens, getAccessToken, getRefreshToken, removeTokens } from '../utils/utils';
 
 export const apiClient = ky.create({
   prefixUrl: config.apiUrl,
@@ -32,6 +32,12 @@ export const apiClient = ky.create({
       async ({ request, error }) => {
         if ((error as any).statusCode !== 401) return;
 
+        if (request.url.includes('auth/refresh')) {
+          removeTokens();
+          window.location.href = '/';
+          return;
+        }
+
         const refreshToken = getRefreshToken();
 
         if (!refreshToken) return;
@@ -43,10 +49,6 @@ export const apiClient = ky.create({
             }
           })
           .json<AuthResponse>();
-
-        if (!res) {
-          // handle error
-        }
 
         addTokens(res);
         request.headers.set('Authorization', `Bearer ${res.accessToken}`);

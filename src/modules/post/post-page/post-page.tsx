@@ -1,7 +1,7 @@
 import { Flex, Pagination, Skeleton, Title } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { CommentFilter } from '@/shared/components/comment/comment-filter/comment-filter';
 import { CommentForm } from '@/shared/components/comment/comment-form/comment-form';
@@ -16,6 +16,7 @@ import { getTotalPages } from '@/shared/utils/utils';
 
 export const PostPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState<ICommentFilterForm>({
     order: {
@@ -24,10 +25,11 @@ export const PostPage = () => {
     }
   });
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, isError } = useQuery({
     queryKey: [POST_BY_ID, id],
     queryFn: () => PostService.getById(Number(id)),
-    staleTime: 0
+    staleTime: 0,
+    retry: false
   });
 
   const { data: comments, isLoading: isLoadingComments } = useQuery({
@@ -44,9 +46,15 @@ export const PostPage = () => {
 
   const loading = isLoading || isFetching;
 
+  useEffect(() => {
+    if (isError) {
+      navigate('/404');
+    }
+  }, [isError]);
+
   return (
     <Container>
-      {loading ? <Skeleton height={250} /> : <PostCard post={data!} isFeed={false} />}
+      {loading || isError ? <Skeleton height={250} /> : <PostCard post={data!} isFeed={false} />}
 
       <Flex direction="column" mt="lg" gap={5} mb={20}>
         <Title order={5}>Comments</Title>

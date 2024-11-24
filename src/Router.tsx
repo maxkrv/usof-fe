@@ -5,8 +5,11 @@ import ActivatePage from './modules/auth/activate-page/activate-page';
 import { LoginPage } from './modules/auth/login-page';
 import { RegisterPage } from './modules/auth/register-page';
 import { ResetPasswordPage } from './modules/auth/reset-password-page/reset-password-page';
+import { NotFoundPage } from './modules/general/not-found-page';
 import { CategoryPostPage } from './modules/post/category/category-post-page';
 import { CreatePostPage } from './modules/post/create-post-page/create-post-page';
+import { EditPostPage } from './modules/post/edit-post-page/edit-post-page';
+import { FavoritesPage } from './modules/post/favorites-page/favorites-page';
 import HomePage from './modules/post/home-page/home-page';
 import { MyPostsPage } from './modules/post/my-posts-page/my-posts-page';
 import { PostPage } from './modules/post/post-page/post-page';
@@ -65,11 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/:id',
-        element: (
-          <PrivateRoute>
-            <UserPage />
-          </PrivateRoute>
-        )
+        element: <UserPage />
       },
       {
         path: 'my-posts',
@@ -84,21 +83,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: ':id',
-            element: (
-              <PrivateRoute>
-                <PostPage />
-              </PrivateRoute>
-            ),
-            children: [
-              {
-                path: 'edit',
-                element: (
-                  <PrivateRoute>
-                    <CreatePostPage />
-                  </PrivateRoute>
-                )
-              }
-            ]
+            element: <PostPage />
           },
           {
             path: 'create',
@@ -107,8 +92,29 @@ const router = createBrowserRouter([
                 <CreatePostPage />
               </PrivateRoute>
             )
+          },
+
+          {
+            path: 'edit/:id',
+            element: (
+              <PrivateRoute>
+                <EditPostPage />
+              </PrivateRoute>
+            )
           }
         ]
+      },
+      {
+        path: 'favorites',
+        element: (
+          <PrivateRoute>
+            <FavoritesPage />
+          </PrivateRoute>
+        )
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />
       }
     ]
   }

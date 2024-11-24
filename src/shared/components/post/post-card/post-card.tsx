@@ -1,5 +1,6 @@
 import { ActionIcon, Badge, Card, Flex, Menu, Text, UnstyledButton } from '@mantine/core';
-import { useMutation } from '@tanstack/react-query';
+import { notifications } from '@mantine/notifications';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FC, useState } from 'react';
@@ -10,6 +11,7 @@ import { IoShareSocial } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { CATEGORY_POSTS, MY_POSTS, POST_BY_ID, POST_FEED, USERS_POSTS } from '@/shared/constants/query-keys';
 import { useAppSelector } from '@/shared/hooks/redux';
 import { useShare } from '@/shared/hooks/useShare';
 import { PostService } from '@/shared/services/post.service';
@@ -35,11 +37,26 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
   const isUserAuthenticated = useAppSelector(isUserAuthenticatedSelector);
   const navigate = useNavigate();
   const share = useShare();
+  const queryClient = useQueryClient();
 
   const [favorite, setFavorite] = useState(post.favorite);
 
   const { mutate: mutateSetFavorite } = useMutation({
     mutationFn: () => PostService.setFavorite(post.id)
+  });
+  const { mutate: mutateDelete } = useMutation({
+    mutationFn: () => PostService.delete(post.id),
+    onSuccess: () => {
+      notifications.show({
+        message: 'Post deleted',
+        color: 'green'
+      });
+      queryClient.invalidateQueries({ queryKey: [POST_FEED] });
+      queryClient.invalidateQueries({ queryKey: [USERS_POSTS, String(userId)] });
+      queryClient.invalidateQueries({ queryKey: [CATEGORY_POSTS] });
+      queryClient.invalidateQueries({ queryKey: [MY_POSTS] });
+      queryClient.invalidateQueries({ queryKey: [POST_BY_ID, String(post.id)] });
+    }
   });
   const { mutate: mutateDeleteFavorite } = useMutation({
     mutationFn: () => PostService.deleteFavorite(post.id)
@@ -55,7 +72,9 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
     }
   };
 
-  const disabled = !isUserActive && isUserAuthenticated;
+  const handleDelete = () => {
+    mutateDelete();
+  };
 
   const handleClick = (cb: () => void) => {
     if (!isUserAuthenticated) {
@@ -69,10 +88,12 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
   const handleShare = () => {
     share({
       title: post.title,
-      url: window.location.href + `post/${post.id}`,
+      url: window.location.origin + `/post/${post.id}`,
       text: post.content
     });
   };
+
+  const disabled = !isUserActive && isUserAuthenticated;
 
   return (
     <Card withBorder p={15}>
@@ -99,12 +120,12 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
                 Share
               </Menu.Item>
               {userId === post.author.id && (
-                <Menu.Item component={Link} to={`/post/${post.id}/edit`} px={5} leftSection={<MdEdit />}>
+                <Menu.Item component={Link} to={`/post/edit/${post.id}`} px={5} leftSection={<MdEdit />}>
                   Edit
                 </Menu.Item>
               )}
               {isFeed && userId === post.author.id && (
-                <Menu.Item px={5} leftSection={<FaRegTrashAlt />} color="red">
+                <Menu.Item px={5} leftSection={<FaRegTrashAlt />} color="red" onClick={handleDelete}>
                   Delete
                 </Menu.Item>
               )}
@@ -149,6 +170,8 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
             </UnstyledButton>
           </InactiveUserPopover>
         </Flex>
+
+        {post.status === 'INACTIVE' && <Badge color="red">Inactive</Badge>}
       </Card.Section>
     </Card>
   );

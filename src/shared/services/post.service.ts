@@ -1,5 +1,5 @@
 import { apiClient } from '../api/api';
-import { CreatePostDto, GetPostsDto, PaginationResponse, PostResponse } from '../types/interfaces';
+import { CreatePostDto, GetPostsDto, PaginationResponse, PostResponse, UpdatePostDto } from '../types/interfaces';
 
 export class PostService {
   static async create(dto: CreatePostDto) {
@@ -36,6 +36,28 @@ export class PostService {
     }
 
     return apiClient.get<PaginationResponse<PostResponse>>('post/me', { searchParams }).json();
+  }
+
+  static async getFavorites(dto: GetPostsDto) {
+    const searchParams = new URLSearchParams();
+
+    if (dto) {
+      Object.entries(dto).forEach(([key, value]) => {
+        if (value) {
+          searchParams.append(key, value);
+        }
+      });
+    }
+
+    return apiClient.get<PaginationResponse<PostResponse>>('post/favorites', { searchParams }).json();
+  }
+
+  static async update(id: number, dto: UpdatePostDto) {
+    return apiClient.patch(`post/${id}`, { json: dto }).json();
+  }
+
+  static async delete(id: number) {
+    return apiClient.delete(`post/${id}`).json();
   }
 
   static async setFavorite(postId: number) {
