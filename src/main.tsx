@@ -20,7 +20,6 @@ import { handleErrorMessage } from './shared/utils/utils.ts';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false,
       refetchOnWindowFocus: false
     },
     mutations: {

@@ -24,6 +24,10 @@ export class PostService {
     return apiClient.get<PostResponse>(`post/${id}`).json();
   }
 
+  static async getForEdit(id: number) {
+    return apiClient.get<PostResponse>(`post/edit/${id}`).json();
+  }
+
   static async getMe(dto: GetPostsDto) {
     const searchParams = new URLSearchParams();
 

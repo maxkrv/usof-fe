@@ -5,14 +5,16 @@ import { FaCheck } from 'react-icons/fa6';
 import { RxCross1 } from 'react-icons/rx';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { useAppDispatch } from '@/shared/hooks/redux';
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/redux';
 import { AuthService } from '@/shared/services/auth.service';
 import { activateConfetti } from '@/shared/store/features/confetti-slice';
+import { setUser } from '@/shared/store/features/user-slice';
 
 import classes from './activate-page.module.css';
 
 const ActivatePage = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   const { token } = useParams();
 
@@ -24,6 +26,9 @@ const ActivatePage = () => {
     mutationFn: AuthService.activate,
     onSuccess: () => {
       dispatch(activateConfetti());
+      if (!user) return;
+
+      dispatch(setUser({ ...user, isActive: true }));
     }
   });
 

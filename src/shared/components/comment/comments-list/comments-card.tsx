@@ -33,19 +33,33 @@ export const CommentsCard: FC<CommentsCardProps> = ({ comment, postId }) => {
     <>
       <Paper p="xs" withBorder key={comment.id}>
         <Group>
-          <Link to={`/user/${comment.author.id}`}>
-            <UserAvatar src={comment.author.profilePicture} />
-          </Link>
-          <div>
-            <Link to={`/user/${comment.author.id}`}>
-              <Text>{comment.author.username}</Text>
-            </Link>
-            <Text size="xs" c="dimmed">
-              {dayjs(comment.createdAt).fromNow()}
-            </Text>
-          </div>
+          {comment.author ? (
+            <>
+              <Link to={`/user/${comment.author.id}`}>
+                <UserAvatar src={comment.author.profilePicture} />
+              </Link>
+              <div>
+                <Link to={`/user/${comment.author.id}`}>
+                  <Text>{comment.author.username}</Text>
+                </Link>
+                <Text size="xs" c="dimmed">
+                  {dayjs(comment.createdAt).fromNow()}
+                </Text>
+              </div>
+            </>
+          ) : (
+            <>
+              <UserAvatar />
+              <div>
+                <Text>[deleted]</Text>
+                <Text size="xs" c="dimmed">
+                  {dayjs(comment.createdAt).fromNow()}
+                </Text>
+              </div>
+            </>
+          )}
 
-          {userId === comment.author.id && (
+          {userId === comment.author?.id && (
             <Menu>
               <Menu.Target>
                 <ActionIcon ml="auto" variant="default">

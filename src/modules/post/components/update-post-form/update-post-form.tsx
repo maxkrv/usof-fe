@@ -14,7 +14,7 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { POST_BY_ID } from '@/shared/constants/query-keys';
+import { POST_BY_ID, POST_FOR_EDIT } from '@/shared/constants/query-keys';
 import { useCategories } from '@/shared/hooks/categories';
 import { useAppDispatch } from '@/shared/hooks/redux';
 import { PostService } from '@/shared/services/post.service';
@@ -54,8 +54,9 @@ export const UpdatePostForm: FC<UpdatePostFormProps> = ({ initialData }) => {
         message: 'Post updated successfully',
         color: 'green'
       });
+      queryClient.refetchQueries({ queryKey: [POST_BY_ID, String(initialData.id)] });
+      queryClient.refetchQueries({ queryKey: [POST_FOR_EDIT, String(initialData.id)] });
       navigate(`/post/${initialData.id}`);
-      queryClient.invalidateQueries({ queryKey: [POST_BY_ID, String(initialData.id)] });
     }
   });
 

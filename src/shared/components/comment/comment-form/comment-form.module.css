@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
   gap: rem(5px);
 
   button {
@@ -14,4 +15,8 @@
 
 .textarea {
   flex: 1;
+}
+
+.button:disabled {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-body));
 }

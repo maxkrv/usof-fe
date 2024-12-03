@@ -105,7 +105,7 @@ export const LikeButton: FC<LikeButtonProps> = ({ initialMyAction, postId, comme
     }
   };
 
-  const disabled = !isUserActive && isUserAuthenticated;
+  const disabled = !isUserActive || !isUserAuthenticated;
 
   const handleClick = (cb: () => void) => {
     if (!isUserAuthenticated) {

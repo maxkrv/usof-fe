@@ -93,18 +93,27 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
     });
   };
 
-  const disabled = !isUserActive && isUserAuthenticated;
+  const disabled = !isUserActive || !isUserAuthenticated;
 
   return (
     <Card withBorder p={15}>
       <Card.Section withBorder p={10}>
         <Flex align="center" gap="xs">
-          <Link to={`/user/${post.author.id}`}>
-            <UserAvatar src={post.author.profilePicture} />
-          </Link>
-          <Link to={`/user/${post.author.id}`}>
-            <Text>{post.author.username}</Text>
-          </Link>
+          {post.author ? (
+            <>
+              <Link to={`/user/${post.author.id}`}>
+                <UserAvatar src={post.author.profilePicture} />
+              </Link>
+              <Link to={`/user/${post.author.id}`}>
+                <Text>{post.author.username}</Text>
+              </Link>
+            </>
+          ) : (
+            <>
+              <UserAvatar />
+              <Text>[deleted]</Text>
+            </>
+          )}
 
           <Text size="xs">{dayjs(post.createdAt).fromNow()}</Text>
 
@@ -119,12 +128,12 @@ export const PostCard: FC<PostCardProps> = ({ post, isFeed }) => {
               <Menu.Item px={5} leftSection={<IoShareSocial />} onClick={handleShare}>
                 Share
               </Menu.Item>
-              {userId === post.author.id && (
+              {userId === post.author?.id && (
                 <Menu.Item component={Link} to={`/post/edit/${post.id}`} px={5} leftSection={<MdEdit />}>
                   Edit
                 </Menu.Item>
               )}
-              {isFeed && userId === post.author.id && (
+              {isFeed && userId === post.author?.id && (
                 <Menu.Item px={5} leftSection={<FaRegTrashAlt />} color="red" onClick={handleDelete}>
                   Delete
                 </Menu.Item>

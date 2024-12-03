@@ -9,4 +9,8 @@
   padding: rem(5px);
   background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7));
   border-radius: rem(10px);
+
+  &:disabled {
+    color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+  }
 }

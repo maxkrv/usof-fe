@@ -31,7 +31,8 @@ export const UserPage = () => {
     queryFn: () => {
       return UserService.getById(Number(id));
     },
-    staleTime: 0
+    staleTime: 0,
+    retry: false
   });
 
   const {

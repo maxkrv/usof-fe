@@ -6,8 +6,11 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { COMMENTS } from '@/shared/constants/query-keys';
+import { useAppSelector } from '@/shared/hooks/redux';
 import { CommentService } from '@/shared/services/comment.service';
+import { isUserActiveSelector, isUserAuthenticatedSelector } from '@/shared/store/features/user-slice';
 
+import { InactiveUserPopover } from '../../inactive-user-popover/inactive-user-popover';
 import classes from './comment-form.module.css';
 
 const CreateCommentSchema = z.object({
@@ -21,6 +24,10 @@ interface CommentFormProps {
 
 export const CommentForm: FC<CommentFormProps> = ({ postId }) => {
   const queryClient = useQueryClient();
+
+  const isUserActive = useAppSelector(isUserActiveSelector);
+  const isUserAuthenticated = useAppSelector(isUserAuthenticatedSelector);
+
   const {
     register,
     handleSubmit,
@@ -46,6 +53,8 @@ export const CommentForm: FC<CommentFormProps> = ({ postId }) => {
     mutate({ ...data, postId });
   };
 
+  const disabled = !isUserActive || !isUserAuthenticated;
+
   return (
     <Card className={classes.container} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Textarea
@@ -53,13 +62,15 @@ export const CommentForm: FC<CommentFormProps> = ({ postId }) => {
         {...register('content')}
         placeholder="Leave a comment"
         minRows={1}
-        disabled={isPending}
+        disabled={isPending || disabled}
         autosize
       />
 
-      <Button loading={isPending} type="submit">
-        Send
-      </Button>
+      <InactiveUserPopover>
+        <Button className={classes.button} loading={isPending} type="submit" disabled={disabled}>
+          Send
+        </Button>
+      </InactiveUserPopover>
     </Card>
   );
 };

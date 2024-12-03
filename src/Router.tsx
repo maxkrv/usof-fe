@@ -15,6 +15,7 @@ import { MyPostsPage } from './modules/post/my-posts-page/my-posts-page';
 import { PostPage } from './modules/post/post-page/post-page';
 import { ProfilePage } from './modules/profile/profile-page/profile-page';
 import { UserPage } from './modules/user/user-page';
+import { ActiveUserRoute } from './shared/hoc/active-user-route';
 import PrivateRoute from './shared/hoc/private-route';
 
 const router = createBrowserRouter([
@@ -88,18 +89,22 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: (
-              <PrivateRoute>
-                <CreatePostPage />
-              </PrivateRoute>
+              <ActiveUserRoute>
+                <PrivateRoute>
+                  <CreatePostPage />
+                </PrivateRoute>
+              </ActiveUserRoute>
             )
           },
 
           {
             path: 'edit/:id',
             element: (
-              <PrivateRoute>
-                <EditPostPage />
-              </PrivateRoute>
+              <ActiveUserRoute>
+                <PrivateRoute>
+                  <EditPostPage />
+                </PrivateRoute>
+              </ActiveUserRoute>
             )
           }
         ]

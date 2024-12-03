@@ -22,7 +22,9 @@ export const InactiveUserPopover: FC<PropsWithChildren> = ({ children }) => {
         </div>
       </Popover.Target>
       <Popover.Dropdown style={{ pointerEvents: 'none' }} p={5}>
-        <Text size="sm">{isUserAuthenticated && !isActive ? 'Your account is inactive' : 'You are not logged in'}</Text>
+        <Text size="sm">
+          {isUserAuthenticated && !isActive ? 'Your account is not activated' : 'You are not logged in'}
+        </Text>
       </Popover.Dropdown>
     </Popover>
   );

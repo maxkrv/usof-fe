@@ -9,5 +9,6 @@ export const CATEGORY_POSTS = 'CATEGORY_POSTS';
 export const MY_POSTS = 'MY_POSTS';
 export const POST_FAVORITES = 'POST_FAVORITES';
 export const POST_BY_ID = 'POST_BY_ID';
+export const POST_FOR_EDIT = 'POST_FOR_EDIT';
 
 export const COMMENTS = 'COMMENTS';

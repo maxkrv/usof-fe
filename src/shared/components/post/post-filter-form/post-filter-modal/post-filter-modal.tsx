@@ -47,7 +47,7 @@ export const PostFilterModal: FC<PostFilterModalProps> = ({
       <Flex direction="column" gap="md">
         <DateInput value={fromDate} onChange={setFromDate} label="From date" maxDate={new Date()} clearable />
 
-        <DateInput value={toDate} onChange={setToDate} label="To date" minDate={new Date()} clearable />
+        <DateInput value={toDate} onChange={setToDate} label="To date" maxDate={new Date()} clearable />
 
         {hasActiveFilters && (
           <>

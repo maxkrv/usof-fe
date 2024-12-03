@@ -1,9 +1,9 @@
 import { Title } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import Container from '@/shared/components/container/container';
-import { POST_BY_ID } from '@/shared/constants/query-keys';
+import { POST_FOR_EDIT } from '@/shared/constants/query-keys';
 import { PostService } from '@/shared/services/post.service';
 
 import { UpdatePostForm } from '../components/update-post-form/update-post-form';
@@ -11,9 +11,10 @@ import { UpdatePostForm } from '../components/update-post-form/update-post-form'
 export const EditPostPage = () => {
   const { id } = useParams();
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: [POST_BY_ID, id],
-    queryFn: () => PostService.getById(Number(id)),
-    staleTime: 0
+    queryKey: [POST_FOR_EDIT, id],
+    queryFn: () => PostService.getForEdit(Number(id)),
+    staleTime: 0,
+    retry: false
   });
 
   if (isLoading || isFetching) {
@@ -21,7 +22,7 @@ export const EditPostPage = () => {
   }
 
   if (!data) {
-    return null;
+    return <Navigate to="/" replace />;
   }
 
   return (

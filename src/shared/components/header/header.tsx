@@ -19,10 +19,11 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/redux';
 import { AuthService } from '@/shared/services/auth.service';
-import { clearUser } from '@/shared/store/features/user-slice';
+import { clearUser, isUserActiveSelector, isUserAuthenticatedSelector } from '@/shared/store/features/user-slice';
 import { removeTokens } from '@/shared/utils/utils';
 
 import Container from '../container/container';
+import { InactiveUserPopover } from '../inactive-user-popover/inactive-user-popover';
 import { MobileMenu } from '../mobile-menu/mobile-menu';
 import { UserAvatar } from '../user-avatar/user-avatar';
 import classes from './header.module.css';
@@ -37,6 +38,8 @@ export const Header = () => {
   const dark = colorScheme === 'dark';
 
   const user = useAppSelector((state) => state.user.user);
+  const isUserActive = useAppSelector(isUserActiveSelector);
+  const isUserAuthenticated = useAppSelector(isUserAuthenticatedSelector);
 
   const { mutate } = useMutation({
     mutationFn: AuthService.logout,
@@ -61,6 +64,8 @@ export const Header = () => {
     removeTokens();
     dispatch(clearUser());
   };
+
+  const disabled = !isUserActive || !isUserAuthenticated;
 
   return (
     <>
@@ -115,9 +120,11 @@ export const Header = () => {
 
                   <Menu.Divider />
 
-                  <Menu.Item component={Link} to={'/post/create'} leftSection={<FaPlus />}>
-                    Create post
-                  </Menu.Item>
+                  <InactiveUserPopover>
+                    <Menu.Item component={Link} disabled={disabled} to={'/post/create'} leftSection={<FaPlus />}>
+                      Create post
+                    </Menu.Item>
+                  </InactiveUserPopover>
 
                   <Menu.Item component={Link} to={'/my-posts'} leftSection={<MdLibraryBooks />}>
                     My posts

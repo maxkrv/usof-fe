@@ -48,7 +48,8 @@ export const MyPostsPage = () => {
         toDate: filters.toDate || undefined,
         status: filters.status,
         categoryId: filters.categoryId
-      })
+      }),
+    staleTime: 0
   });
 
   const loading = isLoadingPosts || isFetching;
